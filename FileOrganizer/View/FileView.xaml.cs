@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileOrganizer.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,26 @@ namespace FileOrganizer.View
     {
         public FileView()
         {
+            OrganizerVM organizerVM = new OrganizerVM();
+
+            foreach (var binding in organizerVM.KeyBindings)
+            {
+                InputBindings.Add(binding);
+            }
+
             InitializeComponent();
+
+            Binding file = new Binding("CurrentFile")
+            {
+                Source = organizerVM
+            };
+
+            FileDisplay.SetBinding(MediaElement.SourceProperty, file);
+        }
+
+        private void Grid_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+
         }
     }
 }

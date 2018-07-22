@@ -8,49 +8,54 @@ using System.Text;
 
 namespace FileOrganizer.Model
 {
-    /**
-     *  Central class for application logic.
-     */
+    /// <summary>
+    /// Central class for application logic.
+    /// </summary>
     class Organizer : INotifyPropertyChanged
     {
-        private Dictionary<char, DirectoryInfo> keyMappings;
-        public Dictionary<char, DirectoryInfo> KeyMappings { get => keyMappings; }
-
         #region INotifyProperty Properties
+        private DirectoryInfo _workingDirectory;
         public DirectoryInfo WorkingDirectory
-        {   get => WorkingDirectory;
+        {   get => _workingDirectory;
             set
             {
-                WorkingDirectory = value;
+                _workingDirectory = value;
                 OnPropertyChanged("WorkingDirectory");
             }
         }
+        private FileInfo _currentFile;
         public FileInfo CurrentFile
         {
-            get => CurrentFile;
+            get => _currentFile;
             set
             {
-                CurrentFile = value;
+                _currentFile = value;
                 OnPropertyChanged("CurrentFile");
             }
         }
-        public ObservableCollection<FileInfo> SelectableFiles
+        private ObservableCollection<FileInfo> _selectableFiles;
+        public ObservableCollection<FileInfo> WorkingFiles
         {
-            get => SelectableFiles;
+            get => _selectableFiles;
             set
-            { SelectableFiles = value;
+            {
+                _selectableFiles = value;
                 OnPropertyChanged("SelectableFiles");
             }
         }
+        public int CurrentFileIndex { get; set; } = 0;
         #endregion
+
+        private string DefaultWDPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
         // Constructor if no file is given
         public Organizer()
         {
-            WorkingDirectory = new DirectoryInfo(Environment.GetFolderPath(Environment.SpecialFolder.MyPictures));
+            WorkingDirectory = new DirectoryInfo(DefaultWDPath);
             Initialize();
         }
 
+        // Program begins in given directory
         public Organizer(DirectoryInfo directoryInfo)
         {
             WorkingDirectory = directoryInfo;
@@ -66,8 +71,8 @@ namespace FileOrganizer.Model
 
         private void Initialize()
         {
-            SelectableFiles = new ObservableCollection<FileInfo>(WorkingDirectory.GetFiles());
-            CurrentFile = SelectableFiles.First();
+            WorkingFiles = new ObservableCollection<FileInfo>(WorkingDirectory.GetFiles());
+            CurrentFile = WorkingFiles[CurrentFileIndex];
         }
     }
 }

@@ -7,8 +7,17 @@
       mc:Ignorable="d" 
       d:DesignHeight="300" d:DesignWidth="300"
       Title="FileView">
-
-    <Grid>
-        
+    <!--
+    <Page.DataContext>
+        <DynamicResource x:Name="VM" ResourceKey="VModel"/>
+    </Page.DataContext>-->
+    <Grid Background="SteelBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <MediaElement x:Name="FileDisplay"/>
     </Grid>
 </Page>
