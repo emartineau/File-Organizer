@@ -2,9 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:FileOrganizer"
-             xmlns:organizervm="clr-namespace:FileOrganizer.ViewModel"
+             xmlns:viewModel="clr-namespace:FileOrganizer.ViewModel"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <organizervm:OrganizerVM x:Key="VModel"/>
+        <viewModel:OrganizerVM x:Key="VModel"/>
+        <viewModel:FileURIConverter x:Key="FileUriCoverter"/>
     </Application.Resources>
 </Application>

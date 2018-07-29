@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
 
@@ -10,13 +11,45 @@ namespace FileOrganizer.ViewModel
     /// <summary>
     /// Application ViewModel. Contains Commands and bindings.
     /// </summary>
-    class OrganizerVM
+    class OrganizerVM : INotifyPropertyChanged
     {
         private Organizer Organizer;
 
-        public ObservableCollection<FileInfo> FileList { get; set; }
-        public FileInfo CurrentFile { get; set; }
-        public int CurrentFileIndex { get; set; }
+        #region INotifyProperty Properties
+        public DirectoryInfo WorkingDirectory
+        {
+            get => Organizer.WorkingDirectory;
+            set
+            {
+                Organizer.WorkingDirectory = value;
+                OnPropertyChanged("WorkingDirectory");
+            }
+        }
+        public ObservableCollection<FileInfo> FileList
+        {
+            get => Organizer.WorkingFiles;
+            set
+            {
+                Organizer.WorkingFiles = value;
+                OnPropertyChanged("WorkingFiles");
+            }
+        }
+
+        public FileInfo CurrentFile
+        {
+            get => FileList[CurrentFileIndex];
+        }
+        private int CurrentFileIndex
+        {
+            get => Organizer.CurrentFileIndex;
+            set
+            {
+                Organizer.CurrentFileIndex = value % FileList.Count;
+                Organizer.CurrentFile = CurrentFile;
+                OnPropertyChanged("CurrentFile");
+            }
+        }
+        #endregion
 
         private ICommand _moveThisFile;
         public ICommand MoveThisFile { get => _moveThisFile; set => _moveThisFile = value; }
@@ -24,12 +57,16 @@ namespace FileOrganizer.ViewModel
 
         private FileInfo Bindings;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public OrganizerVM()
         {
             Organizer = new Organizer();
-            FileList = new ObservableCollection<FileInfo>(Organizer.WorkingFiles);
-            CurrentFileIndex = Organizer.CurrentFileIndex;
-            CurrentFile = Organizer.CurrentFile;
             KeyBindings = new List<KeyBinding>();
 
             var bindingConfig = Path.Combine(KeyMap.DefaultSavePath, KeyMap.DefaultFileName);
@@ -38,7 +75,7 @@ namespace FileOrganizer.ViewModel
             // If a bindings file does not exist, create one.
             CheckBindings(Bindings);
 
-            // Uses the given file to fill the list with KeyBindings.
+            // Uses the bindings file to fill the list with KeyBindings.
             CreateBindings(Bindings);
 
             Console.WriteLine(CurrentFile.Name);
@@ -56,7 +93,7 @@ namespace FileOrganizer.ViewModel
 
         private void CreateBindings(FileInfo bindingsFile)
         {
-            string contents = "";
+            string contents = string.Empty;
 
             try
             {
@@ -78,24 +115,26 @@ namespace FileOrganizer.ViewModel
                     Command = command,
                     Key = entry.Key
                 };
+                KeyBindings.Add(kb);
             }
         }
 
         private void MoveFile(DirectoryInfo destination)
         {
-            Console.WriteLine("MoveFile has executed.");
-            // If the destination folder is blank: skip.
-            if (!destination.Exists)
-                return;
-
+            // If the destination folder matches the identifying skip-name, skip moving this file.
             if (destination.Name == KeyMap.DefaultSkipName)
             {
                 CurrentFileIndex++;
                 return;
             }
+
+            // If the destination folder does not exist: Nothing happens. (May auto-create folder depending on setting)
+            if (!destination.Exists)
+                return;
+
             try
             {
-            File.Move(Organizer.CurrentFile.FullName, destination.FullName);
+            File.Move(CurrentFile.FullName, destination.FullName);
             }
             catch (Exception e)
             {
@@ -103,7 +142,6 @@ namespace FileOrganizer.ViewModel
                 Console.WriteLine(e.StackTrace);
             }
             Console.WriteLine("Move to {0} performed successfully.", destination.FullName);
-            CurrentFile = Organizer.WorkingFiles[CurrentFileIndex];
         }
     }
 }

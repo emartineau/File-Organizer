@@ -31,14 +31,7 @@ namespace FileOrganizer.ViewModel
 
         public void Execute(object parameter)
         {
-            if (parameter != null)
-            {
                 move(destination);
-            }
-            else
-            {
-                throw new ArgumentNullException();
-            }
         }
     }
 }

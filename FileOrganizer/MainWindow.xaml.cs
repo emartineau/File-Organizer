@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileOrganizer.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,12 @@ namespace FileOrganizer
     {
         public MainWindow()
         {
+            OrganizerVM organizerVM = Application.Current.TryFindResource("VModel") as OrganizerVM;
+
+            foreach (var binding in organizerVM.KeyBindings)
+            {
+                InputBindings.Add(binding);
+            }
             InitializeComponent();
         }
     }

@@ -55,6 +55,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\KeyMap.cs" />
+    <Compile Include="ViewModel\FileURIConverter.cs" />
     <Compile Include="ViewModel\MoveCommand.cs" />
     <Compile Include="ViewModel\OrganizerVM.cs" />
     <Compile Include="View\FileView.xaml.cs">
