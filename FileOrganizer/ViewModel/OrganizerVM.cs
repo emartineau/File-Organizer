@@ -1,7 +1,6 @@
 ﻿using FileOrganizer.Model;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Windows.Input;
@@ -25,7 +24,7 @@ namespace FileOrganizer.ViewModel
                 OnPropertyChanged("WorkingDirectory");
             }
         }
-        public ObservableCollection<FileInfo> FileList
+        public IList<FileInfo> WorkingFiles
         {
             get => Organizer.WorkingFiles;
             set
@@ -37,15 +36,14 @@ namespace FileOrganizer.ViewModel
 
         public FileInfo CurrentFile
         {
-            get => FileList[CurrentFileIndex];
+            get => WorkingFiles[CurrentFileIndex];
         }
-        private int CurrentFileIndex
+        public int CurrentFileIndex
         {
             get => Organizer.CurrentFileIndex;
             set
             {
-                Organizer.CurrentFileIndex = value % FileList.Count;
-                Organizer.CurrentFile = CurrentFile;
+                Organizer.CurrentFileIndex = value % WorkingFiles.Count;
                 OnPropertyChanged("CurrentFile");
             }
         }
@@ -53,7 +51,7 @@ namespace FileOrganizer.ViewModel
 
         private ICommand _moveThisFile;
         public ICommand MoveThisFile { get => _moveThisFile; set => _moveThisFile = value; }
-        public IList<KeyBinding> KeyBindings { get; set; }
+        public ICollection<KeyBinding> KeyBindings { get; set; }
 
         private FileInfo Bindings;
 
@@ -134,14 +132,15 @@ namespace FileOrganizer.ViewModel
 
             try
             {
-            File.Move(CurrentFile.FullName, destination.FullName);
+            var destPath = Path.Combine(destination.FullName, CurrentFile.Name);
+            File.Move(CurrentFile.FullName, destPath);
             }
-            catch (Exception e)
+            catch (Exception e) when (e is IOException || e is DirectoryNotFoundException)
             {
                 Console.WriteLine("Could not move file {0} to {1}", "Organizer.CurrentFile.Name", "destination.FullName");
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine(e.Message);
             }
-            Console.WriteLine("Move to {0} performed successfully.", destination.FullName);
+            Console.WriteLine("Moved {0} to {1}.", CurrentFile.Name, destination.FullName);
         }
     }
 }

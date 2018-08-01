@@ -1,6 +1,7 @@
 ﻿using FileOrganizer.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,22 +15,31 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FileOrganizer
+namespace FileOrganizer.View.UIFrames
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for FileList.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class FileList : Page
     {
-        public MainWindow()
+        OrganizerVM organizerVM;
+
+        public FileList()
         {
-            OrganizerVM organizerVM = Application.Current.TryFindResource("VModel") as OrganizerVM;
+            organizerVM = Application.Current.TryFindResource("VModel") as OrganizerVM;
 
             foreach (var binding in organizerVM?.KeyBindings)
             {
                 InputBindings.Add(binding);
             }
             InitializeComponent();
+        }
+
+        private void ItemSelected(object sender, MouseEventArgs e)
+        {
+            var lb = sender as Label;
+            var fileInfo = lb?.DataContext as FileInfo;
+            organizerVM.CurrentFileIndex = organizerVM.WorkingFiles.IndexOf(fileInfo);
         }
     }
 }

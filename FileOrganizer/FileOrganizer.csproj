@@ -55,11 +55,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\KeyMap.cs" />
+    <Compile Include="ViewModel\Commands.cs" />
     <Compile Include="ViewModel\FileURIConverter.cs" />
     <Compile Include="ViewModel\MoveCommand.cs" />
     <Compile Include="ViewModel\OrganizerVM.cs" />
     <Compile Include="View\FileView.xaml.cs">
       <DependentUpon>FileView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UIFrames\FileList.xaml.cs">
+      <DependentUpon>FileList.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UIFrames\FileDisplay.xaml.cs">
+      <DependentUpon>FileDisplay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UIFrames\Toolbar.xaml.cs">
+      <DependentUpon>Toolbar.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -74,6 +84,18 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\FileView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UIFrames\FileList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UIFrames\FileDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UIFrames\Toolbar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

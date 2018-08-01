@@ -25,10 +25,5 @@ namespace FileOrganizer.View
         {
             InitializeComponent();
         }
-
-        private void Grid_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-
-        }
     }
 }

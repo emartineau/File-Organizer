@@ -19,17 +19,11 @@ namespace FileOrganizer.Model
         {   get => _workingDirectory;
             set =>_workingDirectory = value;
         }
-        private FileInfo _currentFile;
-        public FileInfo CurrentFile
+        private IList<FileInfo> _workingFiles;
+        public IList<FileInfo> WorkingFiles
         {
-            get => _currentFile;
-            set =>_currentFile = value;
-        }
-        private ObservableCollection<FileInfo> _selectableFiles;
-        public ObservableCollection<FileInfo> WorkingFiles
-        {
-            get => _selectableFiles;
-            set => _selectableFiles = value;
+            get => _workingFiles;
+            set => _workingFiles = value;
         }
         private int _currentFileIndex;
         public int CurrentFileIndex
@@ -58,7 +52,6 @@ namespace FileOrganizer.Model
         private void Initialize()
         {
             WorkingFiles = new ObservableCollection<FileInfo>(WorkingDirectory.GetFiles().Where(file => !file.Attributes.HasFlag(FileAttributes.System | FileAttributes.Hidden)));
-            CurrentFile = WorkingFiles[CurrentFileIndex];
         }
     }
 }

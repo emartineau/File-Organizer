@@ -21,7 +21,7 @@ namespace FileOrganizer.Model
         public static KeyMapping ReadMapping(string mapText)
         {
             var keyMap = new KeyMapping();
-            var entries = mapText.Split('\n');
+            var entries = mapText.Split(new string[] {"\r\n"}, StringSplitOptions.None);
             foreach (var entry in entries)
             {
                 var trimmedEntry = entry.Trim('[', ']', ' ');

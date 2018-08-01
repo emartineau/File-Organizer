@@ -1,5 +1,4 @@
-﻿using FileOrganizer.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,22 +13,22 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FileOrganizer
+namespace FileOrganizer.View.UIFrames
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for FileView.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class FileView : Page
     {
-        public MainWindow()
+        public FileView()
         {
-            OrganizerVM organizerVM = Application.Current.TryFindResource("VModel") as OrganizerVM;
-
-            foreach (var binding in organizerVM?.KeyBindings)
-            {
-                InputBindings.Add(binding);
-            }
             InitializeComponent();
+        }
+
+        private void Grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            var element = sender as FrameworkElement;
+            element?.Focus();
         }
     }
 }

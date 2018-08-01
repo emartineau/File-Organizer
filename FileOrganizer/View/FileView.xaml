@@ -5,19 +5,19 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FileOrganizer.View"
       mc:Ignorable="d" 
-      d:DesignHeight="300" d:DesignWidth="300"
+      d:DesignHeight="720" d:DesignWidth="1280"
       Title="FileView">
-    <Page.Resources>
-        <StaticResource x:Key="FUConverter" ResourceKey="FileUriCoverter"/>
-        <StaticResource x:Key="VM" ResourceKey="VModel"/>
-    </Page.Resources>
     <Grid Background="SteelBlue">
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <MediaElement x:Name="FileDisplay" Source="{Binding Source={StaticResource VModel}, Path=CurrentFile, Converter={StaticResource FileUriCoverter}}"/>
+        <Frame Grid.Column="0" Grid.Row="1" Source="UIFrames/FileList.xaml"/>
+        <Frame Grid.Column="1" Grid.Row="1" Source="UIFrames/FileDisplay.xaml"/>
+        <Frame Grid.ColumnSpan="2" Grid.Row="0" Source="UIFrames/Toolbar.xaml"/>
     </Grid>
 </Page>
