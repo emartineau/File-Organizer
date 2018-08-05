@@ -43,7 +43,7 @@ namespace FileOrganizer.ViewModel
                 CurrentFileIndex = WorkingFiles.IndexOf(value);
             }
         }
-        public int CurrentFileIndex
+        private int CurrentFileIndex
         {
             get => Organizer.CurrentFileIndex;
             set

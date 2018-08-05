@@ -39,7 +39,7 @@ namespace FileOrganizer.View.UIFrames
         {
             var lb = sender as Label;
             var fileInfo = lb?.DataContext as FileInfo;
-            organizerVM.CurrentFileIndex = organizerVM.WorkingFiles.IndexOf(fileInfo);
+            organizerVM.CurrentFile = fileInfo;
         }
     }
 }
