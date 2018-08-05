@@ -38,8 +38,12 @@ namespace FileOrganizer.ViewModel
         public FileInfo CurrentFile
         {
             get => WorkingFiles[CurrentFileIndex];
+            set
+            {
+                CurrentFileIndex = WorkingFiles.IndexOf(value);
+            }
         }
-        public int CurrentFileIndex
+        private int CurrentFileIndex
         {
             get => Organizer.CurrentFileIndex;
             set
@@ -101,9 +105,10 @@ namespace FileOrganizer.ViewModel
                     contents = bindingReader.ReadToEnd();
                 }
             }
-            catch (Exception e)
+            catch (Exception e) when (e is IOException || e is DirectoryNotFoundException)
             {
                 Console.WriteLine("File could not be read.");
+                Console.WriteLine(e.Message);
             }
 
             foreach (var entry in KeyMap.ReadMapping(contents))
@@ -135,7 +140,7 @@ namespace FileOrganizer.ViewModel
             try
             {
             var sourcePath = movingFile.FullName;
-            var destPath = Path.Combine(destination.FullName, CurrentFile.Name);
+            var destPath = Path.Combine(destination.FullName, movingFile.Name);
             await Task.Run(() => File.Move(sourcePath, destPath));
             }
             catch (Exception e) when (e is IOException || e is DirectoryNotFoundException)

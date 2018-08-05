@@ -23,7 +23,7 @@ namespace FileOrganizer.Model
         public IList<FileInfo> WorkingFiles
         {
             get => _workingFiles;
-            set => _workingFiles = value;
+            set => _workingFiles = value.Where(file => !file.Attributes.HasFlag(FileAttributes.System | FileAttributes.Hidden)).ToList();
         }
         private int _currentFileIndex;
         public int CurrentFileIndex
@@ -51,7 +51,7 @@ namespace FileOrganizer.Model
 
         private void Initialize()
         {
-            WorkingFiles = new ObservableCollection<FileInfo>(WorkingDirectory.GetFiles().Where(file => !file.Attributes.HasFlag(FileAttributes.System | FileAttributes.Hidden)));
+            WorkingFiles = new ObservableCollection<FileInfo>(WorkingDirectory.GetFiles());
         }
     }
 }
