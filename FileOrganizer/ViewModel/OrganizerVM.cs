@@ -38,6 +38,10 @@ namespace FileOrganizer.ViewModel
         public FileInfo CurrentFile
         {
             get => WorkingFiles[CurrentFileIndex];
+            set
+            {
+                CurrentFileIndex = WorkingFiles.IndexOf(value);
+            }
         }
         public int CurrentFileIndex
         {
