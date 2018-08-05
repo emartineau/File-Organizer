@@ -9,6 +9,13 @@ namespace FileOrganizer.ViewModel
     /// </summary>
     static class Commands
     {
+        public enum CommandType
+        {
+            MOVE,
+            DELETE,
+            COPY
+        }
+
         private delegate void Del(string file, string parameter);
 
         private static void MoveDelMethod(string file, string parameter)
@@ -30,9 +37,9 @@ namespace FileOrganizer.ViewModel
 
         public static IDictionary<string, Delegate> Delegates { get; } = new Dictionary<string, Delegate>
         {
-            { "Copy", copy },
             { "Move", move },
-            { "Delete", delete }
+            { "Delete", delete },
+            { "Copy", copy }
         };
     }
 }
