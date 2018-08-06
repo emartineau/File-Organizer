@@ -113,7 +113,7 @@ namespace FileOrganizer.ViewModel
 
             foreach (var entry in KeyMap.ReadMapping(contents))
             {
-                var command = new UserCommand(MoveFile, entry.Value.Item1, entry.Value.Item2);
+                var command = new UserCommand(FileOperation, entry.Value.Item1, entry.Value.Item2);
                 var kb = new KeyBinding
                 {
                     Command = command,
@@ -123,7 +123,7 @@ namespace FileOrganizer.ViewModel
             }
         }
 
-        async private void MoveFile(DirectoryInfo destination, CommandType commandType)
+        async private void FileOperation(DirectoryInfo destination, CommandType commandType)
         {
             var movingFile = CurrentFile;
             // If the destination folder matches the identifying skip-name, skip moving this file.
@@ -151,8 +151,12 @@ namespace FileOrganizer.ViewModel
                     movingFile.Name, destination.FullName);
                 Console.WriteLine(e.Message);
             }
-            Console.WriteLine("Performed operation {2} on File:{0}, Destination:{1}.",
-                movingFile.Name, destination.FullName, commandType.ToString());
+
+            var completionMessage = string.Format("Performed operation {2} on File:{0}, Destination:{1}.",
+                movingFile.Name, 
+                destination.FullName,
+                commandType.ToString());
+            Console.WriteLine(completionMessage);
         }
     }
 }
