@@ -7,15 +7,8 @@ namespace FileOrganizer.ViewModel
     /// <summary>
     /// May or may not get implemented. Contains all the possible actions one can take (that are keybound).
     /// </summary>
-    static class Commands
+    public static class Commands
     {
-        public enum CommandType
-        {
-            MOVE,
-            DELETE,
-            COPY
-        }
-
         private delegate void Del(string file, string parameter);
 
         private static void MoveDelMethod(string file, string parameter)
@@ -37,9 +30,9 @@ namespace FileOrganizer.ViewModel
 
         public static IDictionary<string, Delegate> Delegates { get; } = new Dictionary<string, Delegate>
         {
-            { "Move", move },
-            { "Delete", delete },
-            { "Copy", copy }
+            { "move", move },
+            { "delete", delete },
+            { "copy", copy }
         };
     }
 }
