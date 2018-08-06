@@ -55,8 +55,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\KeyMap.cs" />
-    <Compile Include="ViewModel\Commands.cs" />
-    <Compile Include="ViewModel\CommandType.cs" />
+    <Compile Include="Model\Commands.cs" />
+    <Compile Include="Model\CommandType.cs" />
     <Compile Include="ViewModel\FileURIConverter.cs" />
     <Compile Include="ViewModel\OrganizerVM.cs" />
     <Compile Include="ViewModel\UserCommand.cs" />

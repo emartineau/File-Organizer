@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace FileOrganizer.ViewModel
+namespace FileOrganizer.Model
 {
     /// <summary>
     /// Contains all the possible actions one can take that can be keybound.

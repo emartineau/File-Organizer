@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileOrganizer.ViewModel
+namespace FileOrganizer.Model
 {
     public enum CommandType
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FileOrganizer.Model;
+using System;
 using System.IO;
 using System.Windows.Input;
 
@@ -15,7 +16,9 @@ namespace FileOrganizer.ViewModel
 
         public event EventHandler CanExecuteChanged;
 
-        public UserCommand(Action<DirectoryInfo, CommandType> action, DirectoryInfo destination, CommandType commandType)
+        public UserCommand(Action<DirectoryInfo, CommandType> action,
+            DirectoryInfo destination,
+            CommandType commandType = CommandType.MOVE)
         {
             this.action = action;
             this.destination = destination;

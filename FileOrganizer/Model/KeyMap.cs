@@ -6,13 +6,13 @@ using System.Windows.Input;
 
 namespace FileOrganizer.Model
 {
-    using KeyMapping = Dictionary<Key, DirectoryInfo>;
+    using KeyMapping = Dictionary<Key, Tuple<DirectoryInfo, CommandType>>;
     /// <summary>
     /// Provides the KeyMap for the application to use. Also writes KeyMaps to file.
     /// </summary>    
     static class KeyMap
     {
-        public static readonly string DefaultBinding = "[Space,]";
+        public static readonly string DefaultBinding = "[Space,,move]";
         public static readonly string DefaultSavePath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         public static readonly string DefaultFileName = "KeyMappings.txt";
         public static readonly string DefaultSkipName = "FakeDirectory";
@@ -26,11 +26,11 @@ namespace FileOrganizer.Model
             {
                 var trimmedEntry = entry.Trim('[', ']', ' ');
                 var pair = trimmedEntry.Split(',');
-                if (string.IsNullOrEmpty(pair[0]))
+                if (!Enum.TryParse(pair[0], out Key key) || Enum.TryParse(pair[2], out CommandType commandType))
                     continue;
 
                 var dir = string.IsNullOrWhiteSpace(pair[1]) ? DefaultSkipName : pair[1];
-                keyMap.Add((Key) new KeyConverter().ConvertFromString(pair[0]), new DirectoryInfo(dir));
+                keyMap.Add(key, new Tuple<DirectoryInfo, CommandType>(new DirectoryInfo(dir), commandType));
             }
 
             return keyMap;
@@ -42,7 +42,10 @@ namespace FileOrganizer.Model
             var output = new StringBuilder();
             foreach (var pair in keyMap)
             {
-                output.AppendFormat("[{0},{1}]\n", pair.Key.ToString(), pair.Value.FullName);
+                output.AppendFormat("[{0},{1},{2}]\n",
+                    pair.Key.ToString(),
+                    pair.Value.Item1.FullName,
+                    pair.Value.Item2.ToString());
             }
             return output.ToString();
         }
