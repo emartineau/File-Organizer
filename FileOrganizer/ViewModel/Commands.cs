@@ -5,11 +5,11 @@ using System.IO;
 namespace FileOrganizer.ViewModel
 {
     /// <summary>
-    /// May or may not get implemented. Contains all the possible actions one can take (that are keybound).
+    /// Contains all the possible actions one can take that can be keybound.
     /// </summary>
     public static class Commands
     {
-        private delegate void Del(string file, string parameter);
+        public delegate void Del(string file, string parameter);
 
         private static void MoveDelMethod(string file, string parameter)
         {
@@ -28,7 +28,7 @@ namespace FileOrganizer.ViewModel
         private static Del delete = DeleteDelMethod;
         private static Del copy = CopyDelMethod;
 
-        public static IDictionary<string, Delegate> Delegates { get; } = new Dictionary<string, Delegate>
+        public static IDictionary<string, Del> Delegates { get; } = new Dictionary<string, Del>
         {
             { "move", move },
             { "delete", delete },

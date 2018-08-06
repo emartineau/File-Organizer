@@ -58,8 +58,8 @@
     <Compile Include="ViewModel\Commands.cs" />
     <Compile Include="ViewModel\CommandType.cs" />
     <Compile Include="ViewModel\FileURIConverter.cs" />
-    <Compile Include="ViewModel\MoveCommand.cs" />
     <Compile Include="ViewModel\OrganizerVM.cs" />
+    <Compile Include="ViewModel\UserCommand.cs" />
     <Compile Include="View\FileView.xaml.cs">
       <DependentUpon>FileView.xaml</DependentUpon>
     </Compile>

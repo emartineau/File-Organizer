@@ -113,7 +113,7 @@ namespace FileOrganizer.ViewModel
 
             foreach (var entry in KeyMap.ReadMapping(contents))
             {
-                var command = new MoveCommand(MoveFile, entry.Value);
+                var command = new UserCommand(MoveFile, entry.Value, CommandType.MOVE);
                 var kb = new KeyBinding
                 {
                     Command = command,
@@ -123,7 +123,7 @@ namespace FileOrganizer.ViewModel
             }
         }
 
-        async private void MoveFile(DirectoryInfo destination)
+        async private void MoveFile(DirectoryInfo destination, CommandType commandType = CommandType.MOVE)
         {
             var movingFile = CurrentFile;
             // If the destination folder matches the identifying skip-name, skip moving this file.
@@ -141,14 +141,18 @@ namespace FileOrganizer.ViewModel
             {
             var sourcePath = movingFile.FullName;
             var destPath = Path.Combine(destination.FullName, movingFile.Name);
-            await Task.Run(() => File.Move(sourcePath, destPath));
+            var del = Commands.Delegates[commandType.ToString().ToLower()];
+
+            await Task.Run(() => del(sourcePath, destPath));
             }
             catch (Exception e) when (e is IOException || e is DirectoryNotFoundException)
             {
-                Console.WriteLine("Could not move file {0} to {1}", movingFile.Name, destination.FullName);
+                Console.WriteLine("Could not move file {0} to {1}",
+                    movingFile.Name, destination.FullName);
                 Console.WriteLine(e.Message);
             }
-            Console.WriteLine("Moved {0} to {1}.", movingFile.Name, destination.FullName);
+            Console.WriteLine("Performed operation {2} on File:{0}, Destination:{1}.",
+                movingFile.Name, destination.FullName, commandType.ToString());
         }
     }
 }
