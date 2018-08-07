@@ -1,4 +1,5 @@
 ﻿using FileOrganizer.Model;
+using FileOrganizer.ViewModel.AppCommands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +12,7 @@ namespace FileOrganizer.ViewModel
     /// <summary>
     /// Application ViewModel. Contains Commands and bindings.
     /// </summary>
-    class OrganizerVM : INotifyPropertyChanged
+    public class OrganizerVM : INotifyPropertyChanged
     {
         private Organizer Organizer;
 
@@ -81,7 +82,7 @@ namespace FileOrganizer.ViewModel
 
         private void InitializeCommands()
         {
-            ToParentDirectory = new MenuCommand(this);
+            ToParentDirectory = new MenuCommand(this, MenuCommandList.ToParent);
         }
 
         private void CheckBindings(FileInfo bindingsFile)

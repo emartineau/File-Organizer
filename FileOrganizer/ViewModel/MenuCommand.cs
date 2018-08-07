@@ -10,11 +10,13 @@ namespace FileOrganizer.ViewModel
     class MenuCommand : ICommand
     {
         private OrganizerVM organizerVM;
+        private Action<OrganizerVM> action;
         public event EventHandler CanExecuteChanged;
 
-        public MenuCommand(OrganizerVM organizerVM)
+        public MenuCommand(OrganizerVM organizerVM, Action<OrganizerVM> action)
         {
             this.organizerVM = organizerVM;
+            this.action = action;
         }
 
         public bool CanExecute(object parameter)
@@ -24,7 +26,7 @@ namespace FileOrganizer.ViewModel
 
         public void Execute(object parameter)
         {
-            organizerVM.WorkingDirectory = organizerVM.WorkingDirectory.Parent;
+            action(organizerVM);
         }
     }
 }
