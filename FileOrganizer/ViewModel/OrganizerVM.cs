@@ -147,15 +147,11 @@ namespace FileOrganizer.ViewModel
             }
             catch (Exception e) when (e is IOException || e is DirectoryNotFoundException)
             {
-                Console.WriteLine("Could not move file {0} to {1}",
-                    movingFile.Name, destination.FullName);
+                Console.WriteLine($"Could not move file {movingFile.Name} to {destination.FullName}");
                 Console.WriteLine(e.Message);
             }
 
-            var completionMessage = string.Format("Performed operation {2} on File:{0}, Destination:{1}.",
-                movingFile.Name, 
-                destination.FullName,
-                commandType.ToString());
+            var completionMessage = $"Performed operation {commandType.ToString()} on File:{movingFile.Name}, Destination:{destination.FullName}.";
             Console.WriteLine(completionMessage);
         }
     }
