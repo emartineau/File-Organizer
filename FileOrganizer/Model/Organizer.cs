@@ -11,23 +11,14 @@ namespace FileOrganizer.Model
     class Organizer
     {
         #region Properties
-        private DirectoryInfo _workingDirectory;
-        public DirectoryInfo WorkingDirectory
-        {   get => _workingDirectory;
-            set =>_workingDirectory = value;
-        }
+        public DirectoryInfo WorkingDirectory { get; set; }
         private IList<FileInfo> _workingFiles;
         public IList<FileInfo> WorkingFiles
         {
             get => _workingFiles;
             set => _workingFiles = value.Where(file => !file.Attributes.HasFlag(FileAttributes.System | FileAttributes.Hidden)).ToList();
         }
-        private int _currentFileIndex;
-        public int CurrentFileIndex
-        {
-            get => _currentFileIndex;
-            set => _currentFileIndex = value;
-        }
+        public int CurrentFileIndex { get; set; }
         #endregion
 
         private readonly string DefaultWDPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);

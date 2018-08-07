@@ -141,7 +141,7 @@ namespace FileOrganizer.ViewModel
             {
             var sourcePath = movingFile.FullName;
             var destPath = Path.Combine(destination.FullName, movingFile.Name);
-            var del = Commands.Delegates[commandType.ToString().ToLower()];
+            var del = Commands.Delegates[commandType];
 
             await Task.Run(() => del(sourcePath, destPath));
             }

@@ -10,9 +10,9 @@ namespace FileOrganizer.ViewModel
     /// </summary>
     class UserCommand : ICommand
     {
-        private Action<DirectoryInfo, CommandType> action;
-        private DirectoryInfo destination;
-        private CommandType commandType;
+        private readonly Action<DirectoryInfo, CommandType> action;
+        private readonly DirectoryInfo destination;
+        private readonly CommandType commandType;
 
         public event EventHandler CanExecuteChanged;
 

@@ -27,11 +27,11 @@ namespace FileOrganizer.Model
         private static Del delete = DeleteDelMethod;
         private static Del copy = CopyDelMethod;
 
-        public static IDictionary<string, Del> Delegates { get; } = new Dictionary<string, Del>
+        public static IDictionary<CommandType, Del> Delegates { get; } = new Dictionary<CommandType, Del>
         {
-            { "move", move },
-            { "delete", delete },
-            { "copy", copy }
+            { CommandType.MOVE, move },
+            { CommandType.DELETE, delete },
+            { CommandType.COPY, copy }
         };
     }
 }
