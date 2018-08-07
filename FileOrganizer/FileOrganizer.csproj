@@ -57,10 +57,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\AppCommands.cs" />
     <Compile Include="Model\KeyMap.cs" />
     <Compile Include="Model\Commands.cs" />
     <Compile Include="Model\CommandType.cs" />
     <Compile Include="ViewModel\FileURIConverter.cs" />
+    <Compile Include="ViewModel\MenuCommand.cs" />
     <Compile Include="ViewModel\OrganizerVM.cs" />
     <Compile Include="ViewModel\UserCommand.cs" />
     <Compile Include="View\FileView.xaml.cs">

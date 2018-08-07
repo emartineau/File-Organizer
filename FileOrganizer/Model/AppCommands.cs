@@ -12,7 +12,14 @@ namespace FileOrganizer.Model
 
         private static void ToParentDirectory(ref Organizer organizer)
         {
-            organizer.WorkingDirectory
+            organizer.WorkingDirectory = organizer.WorkingDirectory.Parent;
         }
+
+        private static readonly AppDel toParentDirectory = ToParentDirectory;
+
+        public static readonly IList<AppDel> Delegates = new List<AppDel>()
+        {
+            toParentDirectory
+        };
     }
 }
