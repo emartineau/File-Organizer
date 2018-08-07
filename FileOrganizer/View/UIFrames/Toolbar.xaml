@@ -12,6 +12,7 @@
         <ToolBarTray>
             <ToolBar DataContext="{StaticResource VModel}">
                 <Button Content="Outer Folder" FontFamily="Arial" Command="{Binding ToParentDirectory}"/>
+                <Button Content="Change Directory" FontFamily="Arial" Click="Button_Click"/>
             </ToolBar>
         </ToolBarTray>
     </Grid>

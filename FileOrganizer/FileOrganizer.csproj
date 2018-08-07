@@ -63,7 +63,7 @@
     <Compile Include="Model\KeyMap.cs" />
     <Compile Include="Model\Commands.cs" />
     <Compile Include="Model\CommandType.cs" />
-    <Compile Include="ViewModel\AppCommands\ToParent.cs" />
+    <Compile Include="ViewModel\AppCommands\MenuCommandList.cs" />
     <Compile Include="ViewModel\FileURIConverter.cs" />
     <Compile Include="ViewModel\MenuCommand.cs" />
     <Compile Include="ViewModel\OrganizerVM.cs" />
@@ -139,6 +139,8 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="odvm\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using FileOrganizer.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,21 @@ namespace FileOrganizer.View.UIFrames
         public Toolbar()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var vm = button?.DataContext as OrganizerVM;
+            Gat.Controls.OpenDialogView openDialog = new Gat.Controls.OpenDialogView();
+            Gat.Controls.OpenDialogViewModel opvm = (Gat.Controls.OpenDialogViewModel)openDialog.DataContext;
+            opvm.IsDirectoryChooser = true;
+            bool? result = opvm.Show();
+            if (result == true)
+            {
+                // Get selected file path
+                vm.WorkingDirectory = new DirectoryInfo(opvm.SelectedFilePath);
+            }
         }
     }
 }
