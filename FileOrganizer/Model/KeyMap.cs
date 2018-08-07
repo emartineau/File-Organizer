@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace FileOrganizer.Model
 {
-    using KeyMapping = Dictionary<Key, Tuple<DirectoryInfo, CommandType>>;
+    using KeyMapping = Dictionary<Key, (DirectoryInfo, CommandType)>;
     /// <summary>
     /// Provides the KeyMap for the application to use. Also writes KeyMaps to file.
     /// </summary>    
@@ -30,7 +30,7 @@ namespace FileOrganizer.Model
                     continue;
 
                 var dir = string.IsNullOrWhiteSpace(pair[1]) ? DefaultSkipName : pair[1];
-                keyMap.Add(key, new Tuple<DirectoryInfo, CommandType>(new DirectoryInfo(dir), commandType));
+                keyMap.Add(key, (new DirectoryInfo(dir), commandType));
             }
 
             return keyMap;
