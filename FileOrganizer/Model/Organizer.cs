@@ -30,7 +30,7 @@ namespace FileOrganizer.Model
         }
         #endregion
 
-        private string DefaultWDPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        private readonly string DefaultWDPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
         // Constructor if no file is given
         public Organizer()
