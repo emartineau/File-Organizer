@@ -1,25 +1,20 @@
-﻿using FileOrganizer.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using static FileOrganizer.Model.AppCommands;
 
 namespace FileOrganizer.ViewModel
 {
     class MenuCommand : ICommand
     {
-        private readonly AppDel appDel;
-        private Organizer organizer;
-
+        private OrganizerVM organizerVM;
         public event EventHandler CanExecuteChanged;
 
-        public MenuCommand(AppDel appDel, Organizer organizer)
+        public MenuCommand(OrganizerVM organizerVM)
         {
-            this.appDel = appDel;
-            this.organizer = organizer;
+            this.organizerVM = organizerVM;
         }
 
         public bool CanExecute(object parameter)
@@ -29,7 +24,7 @@ namespace FileOrganizer.ViewModel
 
         public void Execute(object parameter)
         {
-            appDel(ref organizer);
+            organizerVM.WorkingDirectory = organizerVM.WorkingDirectory.Parent;
         }
     }
 }

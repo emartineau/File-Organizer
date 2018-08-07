@@ -11,13 +11,20 @@ namespace FileOrganizer.Model
     class Organizer
     {
         #region Properties
-        public DirectoryInfo WorkingDirectory { get; set; }
-        private IList<FileInfo> _workingFiles;
-        public IList<FileInfo> WorkingFiles
+        private DirectoryInfo _workingDirectory;
+        public DirectoryInfo WorkingDirectory
         {
-            get => _workingFiles;
-            set => _workingFiles = value.Where(file => !file.Attributes.HasFlag(FileAttributes.System | FileAttributes.Hidden)).ToList();
+            get => _workingDirectory;
+            set
+            {
+                if (value == null) return;
+                _workingDirectory = value;
+                WorkingFiles = WorkingDirectory.GetFiles()
+                    .Where(file => !file.Attributes.HasFlag(FileAttributes.System | FileAttributes.Hidden)).ToList();
+                CurrentFileIndex = 0;
+            }
         }
+        public IList<FileInfo> WorkingFiles { get; set; }
         public int CurrentFileIndex { get; set; }
         #endregion
 
@@ -27,19 +34,12 @@ namespace FileOrganizer.Model
         public Organizer()
         {
             WorkingDirectory = new DirectoryInfo(DefaultWDPath);
-            Initialize();
         }
 
         // Program begins in given directory
         public Organizer(DirectoryInfo directoryInfo)
         {
             WorkingDirectory = directoryInfo;
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            WorkingFiles = new ObservableCollection<FileInfo>(WorkingDirectory.GetFiles());
         }
     }
 }

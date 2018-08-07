@@ -10,8 +10,8 @@
 
     <Grid>
         <ToolBarTray>
-            <ToolBar>
-                <Button Content="Outer Folder" FontFamily="Arial"/>
+            <ToolBar DataContext="{StaticResource VModel}">
+                <Button Content="Outer Folder" FontFamily="Arial" Command="{Binding ToParentDirectory}"/>
             </ToolBar>
         </ToolBarTray>
     </Grid>

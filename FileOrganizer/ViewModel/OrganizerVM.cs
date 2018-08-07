@@ -23,16 +23,12 @@ namespace FileOrganizer.ViewModel
             {
                 Organizer.WorkingDirectory = value;
                 OnPropertyChanged("WorkingDirectory");
+                OnPropertyChanged("WorkingFiles");
             }
         }
         public IList<FileInfo> WorkingFiles
         {
             get => Organizer.WorkingFiles;
-            set
-            {
-                Organizer.WorkingFiles = value;
-                OnPropertyChanged("WorkingFiles");
-            }
         }
 
         public FileInfo CurrentFile
@@ -54,8 +50,7 @@ namespace FileOrganizer.ViewModel
         }
         #endregion
 
-        private ICommand _moveThisFile;
-        public ICommand MoveThisFile { get => _moveThisFile; set => _moveThisFile = value; }
+        public ICommand ToParentDirectory { get; set; }
         public ICollection<KeyBinding> KeyBindings { get; set; }
 
         private FileInfo Bindings;
@@ -81,7 +76,12 @@ namespace FileOrganizer.ViewModel
             // Uses the bindings file to fill the list with KeyBindings.
             CreateBindings(Bindings);
 
-            Console.WriteLine(CurrentFile.Name);
+            InitializeCommands();
+        }
+
+        private void InitializeCommands()
+        {
+            ToParentDirectory = new MenuCommand(this);
         }
 
         private void CheckBindings(FileInfo bindingsFile)
