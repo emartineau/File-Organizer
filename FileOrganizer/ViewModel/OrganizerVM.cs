@@ -37,7 +37,7 @@ namespace FileOrganizer.ViewModel
             get => WorkingFiles[CurrentFileIndex];
             set
             {
-                if (CurrentFileSystemInfo.Equals(value) || value.Equals(LastSelectedFile)) return;
+                if (value.Equals(LastSelectedFile)) return;
 
                 CurrentFileIndex = WorkingFiles.IndexOf(value);
                 LastSelectedFile = CurrentFileSystemInfo;
@@ -59,7 +59,12 @@ namespace FileOrganizer.ViewModel
         }
 
         public string TitleText { get => $"{CurrentFileSystemInfo.Name} - File Organizer"; }
-        public string FooterText { get => $"Selected: {CurrentFileSystemInfo.Name} [{CurrentFileIndex + 1}/{WorkingFiles.Count}]"; }
+        public string FooterText
+        {
+            get =>
+                  $"Current Folder: '{WorkingDirectory.Name}' " +
+                  $"Selected: '{CurrentFileSystemInfo.Name}' [{CurrentFileIndex + 1}/{WorkingFiles.Count}]";
+        }
 
         private int CurrentFileIndex
         {
@@ -171,11 +176,11 @@ namespace FileOrganizer.ViewModel
 
             try
             {
-            var sourcePath = movingFile.FullName;
-            var destPath = Path.Combine(destination.FullName, movingFile.Name);
-            var del = Commands.Delegates[commandType];
+                var sourcePath = movingFile.FullName;
+                var destPath = Path.Combine(destination.FullName, movingFile.Name);
+                var del = Commands.Delegates[commandType];
 
-            await Task.Run(() => del(sourcePath, destPath));
+                await Task.Run(() => del(sourcePath, destPath));
             }
             catch (Exception e) when (e is IOException || e is DirectoryNotFoundException)
             {
