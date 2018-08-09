@@ -37,6 +37,8 @@ namespace FileOrganizer.ViewModel
             get => WorkingFiles[CurrentFileIndex];
             set
             {
+                if (CurrentFileSystemInfo.Equals(value) || value.Equals(LastSelectedFile)) return;
+
                 CurrentFileIndex = WorkingFiles.IndexOf(value);
                 LastSelectedFile = CurrentFileSystemInfo;
             }
