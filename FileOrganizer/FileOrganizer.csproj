@@ -65,6 +65,7 @@
     <Compile Include="Model\CommandType.cs" />
     <Compile Include="ViewModel\AppCommands\MenuCommandList.cs" />
     <Compile Include="ViewModel\FileURIConverter.cs" />
+    <Compile Include="ViewModel\FSSingleClickCommand.cs" />
     <Compile Include="ViewModel\MenuCommand.cs" />
     <Compile Include="ViewModel\OrganizerVM.cs" />
     <Compile Include="ViewModel\UserCommand.cs" />

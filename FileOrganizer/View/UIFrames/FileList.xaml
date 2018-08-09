@@ -12,7 +12,9 @@
         <ListView ItemsSource="{Binding Source={StaticResource VModel}, Path=WorkingFiles}" HorizontalContentAlignment="Stretch" Background="#444444">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Button Content="{Binding Name}" VerticalAlignment="Center" Background="#222222" Foreground="#f5f5f8" Height="50" BorderThickness="0" Click="ItemSelected" MouseDoubleClick="DoubleClick"/>
+                    <Button Content="{Binding Name}" VerticalAlignment="Center" HorizontalContentAlignment="Left"
+                            Background="#222222" Foreground="#f5f5f8" Height="50" BorderThickness="0"
+                            Command="{Binding Source={StaticResource VModel}, Path=FSSingleClick}" CommandParameter="{Binding Mode=OneWay}" MouseDoubleClick="DoubleClick"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

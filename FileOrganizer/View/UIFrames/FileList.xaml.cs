@@ -35,11 +35,6 @@ namespace FileOrganizer.View.UIFrames
             InitializeComponent();
         }
 
-        private void ItemSelected(object sender, RoutedEventArgs e)
-        {
-            organizerVM.CurrentFileSystemInfo = GetItem(sender);
-        }
-
         private void DoubleClick(object sender, MouseButtonEventArgs e)
         {
             var fs = GetItem(sender);

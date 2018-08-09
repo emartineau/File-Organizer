@@ -7,7 +7,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="1280"
       Title="FileView">
-    <Grid Background="SteelBlue">
+    <Grid Background="#333333">
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>

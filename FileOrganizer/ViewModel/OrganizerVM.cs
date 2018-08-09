@@ -71,6 +71,8 @@ namespace FileOrganizer.ViewModel
         #endregion
 
         public ICommand ToParentDirectory { get; set; }
+        public ICommand OpenFileDialog { get; set; }
+        public ICommand FSSingleClick { get; set; }
         public ICollection<KeyBinding> KeyBindings { get; set; }
 
         private FileInfo Bindings;
@@ -102,6 +104,8 @@ namespace FileOrganizer.ViewModel
         private void InitializeCommands()
         {
             ToParentDirectory = new MenuCommand(this, MenuCommandList.ToParent);
+            OpenFileDialog = new MenuCommand(this, MenuCommandList.OpenFileDialog);
+            FSSingleClick = new FSSingleClickCommand(this);
         }
 
         private void CheckBindings(FileInfo bindingsFile)

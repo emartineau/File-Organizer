@@ -26,20 +26,5 @@ namespace FileOrganizer.View.UIFrames
         {
             InitializeComponent();
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var button = sender as Button;
-            var vm = button?.DataContext as OrganizerVM;
-            Gat.Controls.OpenDialogView openDialog = new Gat.Controls.OpenDialogView();
-            Gat.Controls.OpenDialogViewModel opvm = (Gat.Controls.OpenDialogViewModel)openDialog.DataContext;
-            opvm.IsDirectoryChooser = true;
-            bool? result = opvm.Show();
-            if (result == true)
-            {
-                // Get selected file path
-                vm.WorkingDirectory = new DirectoryInfo(opvm.SelectedFilePath);
-            }
-        }
     }
 }
