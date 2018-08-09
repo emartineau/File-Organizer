@@ -6,12 +6,16 @@ using System.Windows.Data;
 
 namespace FileOrganizer.ViewModel
 {
-    [ValueConversion(typeof(FileInfo), typeof(Uri))]
+    [ValueConversion(typeof(FileSystemInfo), typeof(Uri))]
     class FileURIConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            FileInfo file = (FileInfo)value;
+            if (value == null)
+            {
+                return null;
+            }
+            FileSystemInfo file = (FileSystemInfo)value;
             Uri convertedFile = new Uri(file.FullName);
             return convertedFile;
         }
@@ -19,7 +23,7 @@ namespace FileOrganizer.ViewModel
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             Uri uri = (Uri)value;
-            FileInfo convertedURI = new FileInfo(uri.LocalPath);
+            FileSystemInfo convertedURI = new FileInfo(uri.LocalPath);
             return convertedURI;
         }
     }

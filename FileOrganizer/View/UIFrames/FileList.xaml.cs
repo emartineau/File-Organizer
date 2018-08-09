@@ -38,8 +38,8 @@ namespace FileOrganizer.View.UIFrames
         private void ItemSelected(object sender, MouseEventArgs e)
         {
             var lb = sender as Label;
-            var fileInfo = lb?.DataContext as FileInfo;
-            organizerVM.CurrentFile = fileInfo;
+            var fileSytstemInfo = lb?.DataContext as FileSystemInfo;
+            organizerVM.CurrentFileSystemInfo = fileSytstemInfo;
         }
     }
 }

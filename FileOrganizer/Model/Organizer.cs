@@ -19,12 +19,12 @@ namespace FileOrganizer.Model
             {
                 if (value == null) return;
                 _workingDirectory = value;
-                WorkingFiles = WorkingDirectory.GetFiles()
+                WorkingFiles = WorkingDirectory.GetFileSystemInfos()
                     .Where(file => !file.Attributes.HasFlag(FileAttributes.System | FileAttributes.Hidden)).ToList();
                 CurrentFileIndex = 0;
             }
         }
-        public IList<FileInfo> WorkingFiles { get; set; }
+        public IList<FileSystemInfo> WorkingFiles { get; set; }
         public int CurrentFileIndex { get; set; }
         #endregion
 

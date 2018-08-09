@@ -9,6 +9,6 @@
       Title="FileView">
 
     <Grid Focusable="True" MouseDown="Grid_MouseDown">
-        <MediaElement Grid.Column="1" Grid.Row="1" x:Name="FileDisplay" Source="{Binding Source={StaticResource VModel}, Path=CurrentFile, Converter={StaticResource FileUriCoverter}}"/>
+        <MediaElement Grid.Column="1" Grid.Row="1" x:Name="FileDisplay" Source="{Binding Source={StaticResource VModel}, Path=LastSelectedFile, Converter={StaticResource FileUriCoverter}}"/>
     </Grid>
 </Page>

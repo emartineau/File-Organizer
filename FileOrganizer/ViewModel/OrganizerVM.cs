@@ -27,19 +27,35 @@ namespace FileOrganizer.ViewModel
                 OnPropertyChanged("WorkingFiles");
             }
         }
-        public IList<FileInfo> WorkingFiles
+        public IList<FileSystemInfo> WorkingFiles
         {
             get => Organizer.WorkingFiles;
         }
 
-        public FileInfo CurrentFile
+        public FileSystemInfo CurrentFileSystemInfo
         {
             get => WorkingFiles[CurrentFileIndex];
             set
             {
                 CurrentFileIndex = WorkingFiles.IndexOf(value);
+                LastSelectedFile = CurrentFileSystemInfo;
             }
         }
+
+        private FileSystemInfo _lastSelectedFile;
+        public FileSystemInfo LastSelectedFile
+        {
+            get => _lastSelectedFile;
+            set
+            {
+                if (value is FileInfo)
+                {
+                    _lastSelectedFile = value as FileInfo;
+                    OnPropertyChanged("LastSelectedFile");
+                }
+            }
+        }
+
         private int CurrentFileIndex
         {
             get => Organizer.CurrentFileIndex;
@@ -126,7 +142,8 @@ namespace FileOrganizer.ViewModel
 
         private async void FileOperationAsync(DirectoryInfo destination, CommandType commandType)
         {
-            var movingFile = CurrentFile;
+            var movingFile = CurrentFileSystemInfo;
+
             // If the destination folder matches the identifying skip-name, skip moving this file.
             if (destination.Name == KeyMap.DefaultSkipName)
             {
