@@ -23,15 +23,15 @@ namespace FileOrganizer.Model
             File.Copy(file, parameter);
         }
 
-        private static Del move = MoveDelMethod;
-        private static Del delete = DeleteDelMethod;
-        private static Del copy = CopyDelMethod;
+        private static Del Move = MoveDelMethod;
+        private static Del Delete = DeleteDelMethod;
+        private static Del Copy = CopyDelMethod;
 
         public static IDictionary<CommandType, Del> Delegates { get; } = new Dictionary<CommandType, Del>
         {
-            { CommandType.MOVE, move },
-            { CommandType.DELETE, delete },
-            { CommandType.COPY, copy }
+            { CommandType.MOVE, Move },
+            { CommandType.DELETE, Delete },
+            { CommandType.COPY, Copy }
         };
     }
 }

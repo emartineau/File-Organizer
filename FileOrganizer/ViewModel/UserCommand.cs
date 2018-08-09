@@ -10,9 +10,9 @@ namespace FileOrganizer.ViewModel
     /// </summary>
     class UserCommand : ICommand
     {
-        private readonly Action<DirectoryInfo, CommandType> action;
-        private readonly DirectoryInfo destination;
-        private readonly CommandType commandType;
+        private readonly Action<DirectoryInfo, CommandType> Action;
+        private readonly DirectoryInfo Destination;
+        private readonly CommandType CommandType;
 
         public event EventHandler CanExecuteChanged;
 
@@ -20,9 +20,9 @@ namespace FileOrganizer.ViewModel
             DirectoryInfo destination,
             CommandType commandType = CommandType.MOVE)
         {
-            this.action = action;
-            this.destination = destination;
-            this.commandType = commandType;
+            Action = action;
+            Destination = destination;
+            CommandType = commandType;
         }
 
         public bool CanExecute(object parameter)
@@ -32,7 +32,7 @@ namespace FileOrganizer.ViewModel
 
         public void Execute(object parameter)
         {
-                action(destination, commandType);
+                Action(Destination, CommandType);
         }
     }
 }
