@@ -11,13 +11,15 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition/>
+            <RowDefinition Height="20"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <Frame Grid.Column="0" Grid.Row="1" Source="UIFrames/FileList.xaml"/>
-        <Frame Grid.Column="1" Grid.Row="1" Source="UIFrames/FileDisplay.xaml"/>
-        <Frame Grid.ColumnSpan="2" Grid.Row="0" Source="UIFrames/Toolbar.xaml"/>
+        <Frame Grid.Row="0" Grid.ColumnSpan="2" Source="UIFrames/Toolbar.xaml"/>
+        <Frame Grid.Row="1" Grid.Column="0" Source="UIFrames/FileList.xaml"/>
+        <Frame Grid.Row="1" Grid.Column="1" Source="UIFrames/FileDisplay.xaml"/>
+        <Frame Grid.Row="2" Grid.ColumnSpan="2" Source="UIFrames/Footer.xaml"/>
     </Grid>
 </Page>

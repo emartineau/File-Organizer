@@ -32,7 +32,7 @@ namespace FileOrganizer.ViewModel
 
         public void Execute(object parameter)
         {
-                Action(Destination, CommandType);
+            Action(Destination, CommandType);
         }
     }
 }

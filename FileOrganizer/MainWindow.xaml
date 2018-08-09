@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FileOrganizer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
+        Title="{Binding Source={StaticResource VModel}, Path=TitleText}" Height="720" Width="1280">
     <Grid>
         <Frame Source="View/FileView.xaml"/>
     </Grid>

@@ -56,6 +56,9 @@ namespace FileOrganizer.ViewModel
             }
         }
 
+        public string TitleText { get => $"{CurrentFileSystemInfo.Name} - File Organizer"; }
+        public string FooterText { get => $"Selected: {CurrentFileSystemInfo.Name} [{CurrentFileIndex + 1}/{WorkingFiles.Count}]"; }
+
         private int CurrentFileIndex
         {
             get => Organizer.CurrentFileIndex;
@@ -63,8 +66,10 @@ namespace FileOrganizer.ViewModel
             {
                 if (WorkingFiles != null)
                 {
-                Organizer.CurrentFileIndex = value % WorkingFiles.Count;
-                OnPropertyChanged("CurrentFile");
+                    Organizer.CurrentFileIndex = value % WorkingFiles.Count;
+                    OnPropertyChanged("CurrentFile");
+                    OnPropertyChanged("TitleText");
+                    OnPropertyChanged("FooterText");
                 }
             }
         }
