@@ -10,7 +10,7 @@
 
     <Grid Height="20">
         <StackPanel DataContext="{StaticResource VModel}">
-            <TextBlock Text="{Binding FooterText}"/>
+            <TextBlock Text="{Binding FooterText}" Foreground="WhiteSmoke"/>
         </StackPanel>
     </Grid>
 </Page>
