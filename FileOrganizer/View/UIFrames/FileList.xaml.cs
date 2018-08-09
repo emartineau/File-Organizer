@@ -35,11 +35,26 @@ namespace FileOrganizer.View.UIFrames
             InitializeComponent();
         }
 
-        private void ItemSelected(object sender, MouseEventArgs e)
+        private void ItemSelected(object sender, RoutedEventArgs e)
         {
-            var lb = sender as Label;
-            var fileSytstemInfo = lb?.DataContext as FileSystemInfo;
-            organizerVM.CurrentFileSystemInfo = fileSytstemInfo;
+            organizerVM.CurrentFileSystemInfo = GetItem(sender);
+        }
+
+        private void DoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var fs = GetItem(sender);
+            organizerVM.CurrentFileSystemInfo = fs;
+
+            if (fs is DirectoryInfo)
+            {
+                organizerVM.WorkingDirectory = fs as DirectoryInfo;
+            }
+        }
+
+        private FileSystemInfo GetItem(object sender)
+        {
+            var lb = sender as Button;
+            return lb?.DataContext as FileSystemInfo;
         }
     }
 }

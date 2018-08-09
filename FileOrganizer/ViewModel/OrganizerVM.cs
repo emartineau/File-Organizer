@@ -61,8 +61,11 @@ namespace FileOrganizer.ViewModel
             get => Organizer.CurrentFileIndex;
             set
             {
+                if (WorkingFiles != null)
+                {
                 Organizer.CurrentFileIndex = value % WorkingFiles.Count;
                 OnPropertyChanged("CurrentFile");
+                }
             }
         }
         #endregion
