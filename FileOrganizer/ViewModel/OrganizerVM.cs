@@ -110,7 +110,7 @@ namespace FileOrganizer.ViewModel
         {
             ToParentDirectory = new MenuCommand(this, MenuCommandList.ToParent);
             OpenFileDialog = new MenuCommand(this, MenuCommandList.OpenFileDialog);
-            FSSingleClick = new FSSingleClickCommand(this);
+            FSSingleClick = new FSClickCommand(this);
         }
 
         private void CheckBindings(FileInfo bindingsFile)

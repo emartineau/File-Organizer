@@ -34,22 +34,5 @@ namespace FileOrganizer.View.UIFrames
             }
             InitializeComponent();
         }
-
-        private void DoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var fs = GetItem(sender);
-            organizerVM.CurrentFileSystemInfo = fs;
-
-            if (fs is DirectoryInfo)
-            {
-                organizerVM.WorkingDirectory = fs as DirectoryInfo;
-            }
-        }
-
-        private FileSystemInfo GetItem(object sender)
-        {
-            var lb = sender as Button;
-            return lb?.DataContext as FileSystemInfo;
-        }
     }
 }
