@@ -17,7 +17,11 @@ namespace FileOrganizer.ViewModel.AppCommands
             };
 
             folderBrowserDialog.ShowDialog();
-            vm.WorkingDirectory = new DirectoryInfo(folderBrowserDialog.SelectedPath);
+
+            if (!string.IsNullOrEmpty(folderBrowserDialog.SelectedPath))
+            {
+                vm.WorkingDirectory = new DirectoryInfo(folderBrowserDialog.SelectedPath);
+            }
         };
     }
 }
