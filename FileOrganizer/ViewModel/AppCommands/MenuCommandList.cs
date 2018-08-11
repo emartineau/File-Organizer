@@ -9,16 +9,15 @@ namespace FileOrganizer.ViewModel.AppCommands
 
         public static readonly Action<OrganizerVM> OpenFileDialog = (vm) =>
         {
-            // implementation as per Gat's documentation
-            Gat.Controls.OpenDialogView openDialog = new Gat.Controls.OpenDialogView();
-            Gat.Controls.OpenDialogViewModel opvm = (Gat.Controls.OpenDialogViewModel)openDialog.DataContext;
-            opvm.IsDirectoryChooser = true;
-            bool? result = opvm.Show();
-            if (result == true)
+            var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog
             {
-                // Get selected file path
-                vm.WorkingDirectory = new DirectoryInfo(opvm.SelectedFilePath);
-            }
+                RootFolder = Environment.SpecialFolder.MyComputer,
+                Description = "Pick a folder to switch to.",
+                ShowNewFolderButton = true
+            };
+
+            folderBrowserDialog.ShowDialog();
+            vm.WorkingDirectory = new DirectoryInfo(folderBrowserDialog.SelectedPath);
         };
     }
 }
