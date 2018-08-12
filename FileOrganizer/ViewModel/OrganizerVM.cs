@@ -52,7 +52,7 @@ namespace FileOrganizer.ViewModel
             {
                 if (value is FileInfo)
                 {
-                    _lastSelectedFile = value as FileInfo;
+                    _lastSelectedFile = value as FileInfo; 
                     OnPropertyChanged("LastSelectedFile");
                 }
             }
