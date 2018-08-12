@@ -17,6 +17,7 @@ namespace FileOrganizer.ViewModel
     public class OrganizerVM : INotifyPropertyChanged
     {
         private Organizer Organizer;
+        private IList<FileSystemInfo> WorkingFiles { get => Organizer.WorkingFiles; }
 
         private FileInfo UserBindings;
 
@@ -55,20 +56,19 @@ namespace FileOrganizer.ViewModel
                 OnPropertyChanged("FooterText");
             }
         }
-        public IList<FileSystemInfo> WorkingFiles
-        {
-            get => Organizer.WorkingFiles;
-        }
+        
+        public ObservableCollection<FileButtonViewModel> FileButtons { get; }
 
-        public FileSystemInfo CurrentFileSystemInfo
+        public FileButtonViewModel CurrentFileSystemInfo
         {
-            get => WorkingFiles[CurrentFileIndex];
+            get => FileButtons[CurrentFileIndex];
             set
             {
-                if (value.FullName == LastSelectedFile?.FullName) return;
+                if (value.FileSystemInfo.FullName == LastSelectedFile?.FullName) return;
 
-                CurrentFileIndex = WorkingFiles.ToList().FindIndex((x) => x.FullName == value.FullName);
-                LastSelectedFile = CurrentFileSystemInfo;
+                CurrentFileIndex = FileButtons.ToList().FindIndex((fsi) =>
+                    fsi.FileSystemInfo.FullName == value.FileSystemInfo.FullName);
+                LastSelectedFile = CurrentFileSystemInfo.FileSystemInfo;
             }
         }
 
@@ -86,13 +86,13 @@ namespace FileOrganizer.ViewModel
             }
         }
 
-        public string TitleText { get => $"{CurrentFileSystemInfo.Name} - File Organizer"; }
+        public string TitleText { get => $"{CurrentFileSystemInfo.FileSystemInfo.Name} - File Organizer"; }
         public string FooterText
         {
             get =>
                   $"Current Folder: '{WorkingDirectory.Name}' " +
                   (WorkingFiles == null || WorkingFiles.Count == 0 ? "" :
-                    $"Selected: '{CurrentFileSystemInfo.Name}' [{CurrentFileIndex + 1}/{WorkingFiles.Count}]");
+                    $"Selected: '{CurrentFileSystemInfo.FileSystemInfo.Name}' [{CurrentFileIndex + 1}/{WorkingFiles.Count}]");
         }
 
         public int CurrentFileIndex
@@ -109,9 +109,6 @@ namespace FileOrganizer.ViewModel
                 }
             }
         }
-
-        //public FileListViewModel FileListViewModel { get; }
-        public ObservableCollection<FileButtonViewModel> FileButtons { get; }
         #endregion
 
         public ICommand ToParentDirectoryCommand { get; set; }
@@ -154,23 +151,23 @@ namespace FileOrganizer.ViewModel
             }
         }
 
-        private void FileButtonOnClick(FileSystemInfo fileInfo)
+        private void FileButtonOnClick(FileSystemInfo fsInfo)
         {
             if (ClickTimer.Enabled) // Double-Click
             {
-                if (Directory.Exists(fileInfo.FullName))
+                if (Directory.Exists(fsInfo.FullName))
                 {
-                    WorkingDirectory = new DirectoryInfo(fileInfo.FullName);
+                    WorkingDirectory = new DirectoryInfo(fsInfo.FullName);
                 }
                 else
                 {
-                    CurrentFileSystemInfo = fileInfo;
+                    CurrentFileIndex = WorkingFiles.ToList().FindIndex((fsi) => fsi.FullName == fsInfo.FullName);
                 }
             }
             else // Single-Click
             {
                 ClickTimer.Start();
-                CurrentFileSystemInfo = fileInfo;
+                CurrentFileSystemInfo = FileButtons.ToList().Find((fb) => fb.FileSystemInfo.FullName == fsInfo.FullName);
             }
         }
 
@@ -234,7 +231,7 @@ namespace FileOrganizer.ViewModel
 
         private async void FileOperationAsync(DirectoryInfo destination, CommandType commandType)
         {
-            var movingFile = CurrentFileSystemInfo;
+            var movingFile = CurrentFileSystemInfo.FileSystemInfo;
 
             // If the destination folder matches the identifying skip-name, skip moving this file.
             if (destination.Name == KeyMap.DefaultSkipName)
