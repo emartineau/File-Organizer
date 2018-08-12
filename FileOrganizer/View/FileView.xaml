@@ -18,7 +18,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Frame Grid.Row="0" Grid.ColumnSpan="2" Source="UIFrames/Toolbar.xaml"/>
-        <Frame Grid.Row="1" Grid.Column="0" Source="UIFrames/FileList.xaml"/>
+        <Frame Grid.Row="1" Grid.Column="0" Source="FileButtonView.xaml"/>
         <Frame Grid.Row="1" Grid.Column="1" Source="UIFrames/FileDisplay.xaml"/>
         <Frame Grid.Row="2" Grid.ColumnSpan="2" Source="UIFrames/Footer.xaml"/>
     </Grid>

@@ -11,8 +11,8 @@
     <Grid>
         <ToolBarTray>
             <ToolBar DataContext="{StaticResource VModel}">
-                <Button Content="Outer Folder" FontFamily="Arial" Command="{Binding ToParentDirectory}"/>
-                <Button Content="Change Directory" FontFamily="Arial" Command="{Binding OpenFileDialog}"/>
+                <Button Content="Outer Folder" FontFamily="Arial" Command="{Binding ToParentDirectoryCommand}"/>
+                <Button Content="Change Directory" FontFamily="Arial" Command="{Binding OpenFileDialogCommand}"/>
             </ToolBar>
         </ToolBarTray>
     </Grid>

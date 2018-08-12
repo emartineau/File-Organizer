@@ -1,10 +1,12 @@
 ﻿using FileOrganizer.Model;
-using FileOrganizer.ViewModel.AppCommands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Input;
 
 namespace FileOrganizer.ViewModel
@@ -16,6 +18,29 @@ namespace FileOrganizer.ViewModel
     {
         private Organizer Organizer;
 
+        private FileInfo UserBindings;
+
+        public OrganizerVM()
+        {
+            Organizer = new Organizer();
+            KeyBindings = new List<KeyBinding>();
+
+            var bindingConfig = Path.Combine(KeyMap.DefaultSavePath, KeyMap.DefaultFileName);
+            UserBindings = new FileInfo(bindingConfig);
+
+            // If a bindings file does not exist, create one.
+            CheckBindings(UserBindings);
+
+            // Uses the bindings file to fill the list with KeyBindings.
+            CreateBindings(UserBindings);
+
+            InitCommands();
+            InitTimer();
+
+            FileButtons = new ObservableCollection<FileButtonViewModel>();
+            SetFileButtons();
+        }
+
         #region INotifyProperty Properties
         public DirectoryInfo WorkingDirectory
         {
@@ -23,8 +48,11 @@ namespace FileOrganizer.ViewModel
             set
             {
                 Organizer.WorkingDirectory = value;
+                SetFileButtons();
                 OnPropertyChanged("WorkingDirectory");
                 OnPropertyChanged("WorkingFiles");
+                OnPropertyChanged("LastSelectedFile");
+                OnPropertyChanged("FooterText");
             }
         }
         public IList<FileSystemInfo> WorkingFiles
@@ -37,9 +65,9 @@ namespace FileOrganizer.ViewModel
             get => WorkingFiles[CurrentFileIndex];
             set
             {
-                if (value.Equals(LastSelectedFile)) return;
+                if (value.FullName == LastSelectedFile?.FullName) return;
 
-                CurrentFileIndex = WorkingFiles.IndexOf(value);
+                CurrentFileIndex = WorkingFiles.ToList().FindIndex((x) => x.FullName == value.FullName);
                 LastSelectedFile = CurrentFileSystemInfo;
             }
         }
@@ -50,9 +78,9 @@ namespace FileOrganizer.ViewModel
             get => _lastSelectedFile;
             set
             {
-                if (value is FileInfo)
+                if (File.Exists(value.FullName))
                 {
-                    _lastSelectedFile = value as FileInfo; 
+                    _lastSelectedFile = new FileInfo(value.FullName); 
                     OnPropertyChanged("LastSelectedFile");
                 }
             }
@@ -66,10 +94,10 @@ namespace FileOrganizer.ViewModel
                   $"Selected: '{CurrentFileSystemInfo.Name}' [{CurrentFileIndex + 1}/{WorkingFiles.Count}]";
         }
 
-        private int CurrentFileIndex
+        public int CurrentFileIndex
         {
             get => Organizer.CurrentFileIndex;
-            set
+            private set
             {
                 if (WorkingFiles != null)
                 {
@@ -80,14 +108,15 @@ namespace FileOrganizer.ViewModel
                 }
             }
         }
+
+        //public FileListViewModel FileListViewModel { get; }
+        public ObservableCollection<FileButtonViewModel> FileButtons { get; }
         #endregion
 
-        public ICommand ToParentDirectory { get; set; }
-        public ICommand OpenFileDialog { get; set; }
-        public ICommand FSSingleClick { get; set; }
-        public ICollection<KeyBinding> KeyBindings { get; set; }
-
-        private FileInfo Bindings;
+        public ICommand ToParentDirectoryCommand { get; set; }
+        public ICommand OpenFileDialogCommand { get; set; }
+        public ICollection<KeyBinding> KeyBindings { get; private set; }
+        public Timer ClickTimer { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -96,35 +125,78 @@ namespace FileOrganizer.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public OrganizerVM()
+        private void InitCommands()
         {
-            Organizer = new Organizer();
-            KeyBindings = new List<KeyBinding>();
-
-            var bindingConfig = Path.Combine(KeyMap.DefaultSavePath, KeyMap.DefaultFileName);
-            Bindings = new FileInfo(bindingConfig);
-
-            // If a bindings file does not exist, create one.
-            CheckBindings(Bindings);
-
-            // Uses the bindings file to fill the list with KeyBindings.
-            CreateBindings(Bindings);
-
-            InitializeCommands();
+            ToParentDirectoryCommand = new RelayCommand(ToParentDirectory,() => true);
+            OpenFileDialogCommand = new RelayCommand(OpenFileDialog, () => true);
         }
 
-        private void InitializeCommands()
+        private void ToParentDirectory()
         {
-            ToParentDirectory = new MenuCommand(this, MenuCommandList.ToParent);
-            OpenFileDialog = new MenuCommand(this, MenuCommandList.OpenFileDialog);
-            FSSingleClick = new FSClickCommand(this);
+            WorkingDirectory = WorkingDirectory.Parent;
+        }
+
+        private void OpenFileDialog()
+        {
+            var folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog
+            {
+                RootFolder = Environment.SpecialFolder.MyComputer,
+                Description = "Pick a folder to switch to.",
+                ShowNewFolderButton = true
+            };
+
+            folderBrowserDialog.ShowDialog();
+
+            if (!string.IsNullOrEmpty(folderBrowserDialog.SelectedPath))
+            {
+                WorkingDirectory = new DirectoryInfo(folderBrowserDialog.SelectedPath);
+            }
+        }
+
+        private void FileButtonOnClick(FileSystemInfo fileInfo)
+        {
+            if (ClickTimer.Enabled) // Double-Click
+            {
+                if (Directory.Exists(fileInfo.FullName))
+                {
+                    WorkingDirectory = new DirectoryInfo(fileInfo.FullName);
+                }
+                else
+                {
+                    CurrentFileSystemInfo = fileInfo;
+                }
+            }
+            else // Single-Click
+            {
+                ClickTimer.Start();
+                CurrentFileSystemInfo = fileInfo;
+            }
+        }
+
+        private void SetFileButtons()
+        {
+            FileButtons.Clear();
+            foreach (var file in WorkingFiles)
+            {
+                FileButtons.Add(new FileButtonViewModel(file, () => FileButtonOnClick(file)));
+            }
+            OnPropertyChanged("FileButtons");
+        }
+
+        private void InitTimer()
+        {
+            ClickTimer = new Timer
+            {
+                Interval = 250 // up to 250ms to double click
+            };
+            ClickTimer.Elapsed += (sender, args) => ClickTimer.Stop();
         }
 
         private void CheckBindings(FileInfo bindingsFile)
         {
-            if (!Bindings.Exists)
+            if (!UserBindings.Exists)
             {
-                var stream = Bindings.CreateText();
+                var stream = UserBindings.CreateText();
                 stream.Write(KeyMap.DefaultBinding);
                 stream.Close();
             }
@@ -136,7 +208,7 @@ namespace FileOrganizer.ViewModel
 
             try
             {
-                using (StreamReader bindingReader = new StreamReader(Bindings.OpenRead()))
+                using (StreamReader bindingReader = new StreamReader(UserBindings.OpenRead()))
                 {
                     contents = bindingReader.ReadToEnd();
                 }
