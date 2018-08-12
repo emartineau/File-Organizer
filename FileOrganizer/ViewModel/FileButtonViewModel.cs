@@ -11,8 +11,6 @@ namespace FileOrganizer.ViewModel
 {
     public class FileButtonViewModel
     {
-        private readonly Timer ClickTimer; // For distinguishing Single and Double Clicks
-
         public FileButtonViewModel(FileSystemInfo fileSystemInfo, Action OnClick)
         {
             FileSystemInfo = fileSystemInfo;

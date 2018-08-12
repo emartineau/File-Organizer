@@ -8,7 +8,7 @@ namespace FileOrganizer.Model
     /// </summary>
     public static class Commands
     {
-        public delegate void Del(string file, string parameter);
+        public delegate void FileOp(string file, string parameter);
 
         private static void MoveDelMethod(string file, string parameter)
         {
@@ -23,11 +23,11 @@ namespace FileOrganizer.Model
             File.Copy(file, parameter);
         }
 
-        private static Del Move = MoveDelMethod;
-        private static Del Delete = DeleteDelMethod;
-        private static Del Copy = CopyDelMethod;
+        private static FileOp Move = MoveDelMethod;
+        private static FileOp Delete = DeleteDelMethod;
+        private static FileOp Copy = CopyDelMethod;
 
-        public static IDictionary<CommandType, Del> Delegates { get; } = new Dictionary<CommandType, Del>
+        public static IDictionary<CommandType, FileOp> Delegates { get; } = new Dictionary<CommandType, FileOp>
         {
             { CommandType.MOVE, Move },
             { CommandType.DELETE, Delete },

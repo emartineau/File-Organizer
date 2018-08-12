@@ -9,6 +9,20 @@ namespace FileOrganizer.Model
     /// </summary>
     class Organizer
     {
+        private readonly string DefaultWDPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+
+        // Constructor if no file is given
+        public Organizer()
+        {
+            WorkingDirectory = new DirectoryInfo(DefaultWDPath);
+        }
+
+        // Program begins in given directory
+        public Organizer(DirectoryInfo directoryInfo)
+        {
+            WorkingDirectory = directoryInfo;
+        }
+
         #region Properties
         private DirectoryInfo _workingDirectory;
         public DirectoryInfo WorkingDirectory
@@ -26,19 +40,5 @@ namespace FileOrganizer.Model
         public IList<FileSystemInfo> WorkingFiles { get; set; }
         public int CurrentFileIndex { get; set; }
         #endregion
-
-        private readonly string DefaultWDPath = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-
-        // Constructor if no file is given
-        public Organizer()
-        {
-            WorkingDirectory = new DirectoryInfo(DefaultWDPath);
-        }
-
-        // Program begins in given directory
-        public Organizer(DirectoryInfo directoryInfo)
-        {
-            WorkingDirectory = directoryInfo;
-        }
     }
 }

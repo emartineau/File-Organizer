@@ -80,7 +80,7 @@ namespace FileOrganizer.ViewModel
             {
                 if (File.Exists(value.FullName))
                 {
-                    _lastSelectedFile = new FileInfo(value.FullName); 
+                    _lastSelectedFile = new FileInfo(value.FullName);
                     OnPropertyChanged("LastSelectedFile");
                 }
             }
@@ -91,7 +91,8 @@ namespace FileOrganizer.ViewModel
         {
             get =>
                   $"Current Folder: '{WorkingDirectory.Name}' " +
-                  $"Selected: '{CurrentFileSystemInfo.Name}' [{CurrentFileIndex + 1}/{WorkingFiles.Count}]";
+                  (WorkingFiles == null || WorkingFiles.Count == 0 ? "" :
+                    $"Selected: '{CurrentFileSystemInfo.Name}' [{CurrentFileIndex + 1}/{WorkingFiles.Count}]");
         }
 
         public int CurrentFileIndex
@@ -116,7 +117,7 @@ namespace FileOrganizer.ViewModel
         public ICommand ToParentDirectoryCommand { get; set; }
         public ICommand OpenFileDialogCommand { get; set; }
         public ICollection<KeyBinding> KeyBindings { get; private set; }
-        public Timer ClickTimer { get; private set; }
+        public Timer ClickTimer { get; private set; }  // For distinguishing Single and Double Clicks
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -127,7 +128,7 @@ namespace FileOrganizer.ViewModel
 
         private void InitCommands()
         {
-            ToParentDirectoryCommand = new RelayCommand(ToParentDirectory,() => true);
+            ToParentDirectoryCommand = new RelayCommand(ToParentDirectory, () => true);
             OpenFileDialogCommand = new RelayCommand(OpenFileDialog, () => true);
         }
 
