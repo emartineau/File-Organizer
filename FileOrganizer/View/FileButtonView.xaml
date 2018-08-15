@@ -10,15 +10,55 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <DataTemplate DataType="{x:Type local:FileButtonViewModel}">
-                <Button Content="{Binding FileSystemInfo.Name}" VerticalAlignment="Center" HorizontalContentAlignment="Left"
-                            Background="#222222" Foreground="#f5f5f8" Height="50" BorderThickness="0"
-                            Command="{Binding Select}"/>
+                <ToggleButton Content="{Binding FileSystemInfo.Name}" HorizontalContentAlignment="Left"
+                            Foreground="#f5f5f8" Height="50" BorderThickness="0" Padding="5"
+                            Command="{Binding Select}" IsChecked="{Binding IsSelected, Mode=OneWay}">
+                    <ToggleButton.Style>
+                        <Style TargetType="ToggleButton">
+                            <Setter Property="Background" Value="#333333"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Padding" Value="5"/>
+                            <Setter Property="BorderBrush" Value="{x:Null}"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}">
+                                            <ContentPresenter VerticalAlignment="{TemplateBinding VerticalAlignment}"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#676767" />
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="True">
+                                    <Setter Property="Background" Value="#676767"/>
+                                </Trigger>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Background" Value="#333333"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ToggleButton.Style>
+                </ToggleButton>
             </DataTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid Background="#444444">
-        <ListView ItemsSource="{Binding FileButtons}" HorizontalContentAlignment="Stretch" Background="#444444">
-            
+    <Grid Background="#222222">
+        <ListView ItemsSource="{Binding FileButtons}" HorizontalContentAlignment="Stretch" Background="#444444" BorderThickness="0">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Style.Setters>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="BorderThickness" Value="0" />
+                    </Style.Setters>
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
     </Grid>
 </UserControl>

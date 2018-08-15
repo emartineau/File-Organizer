@@ -4,17 +4,32 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:FileOrganizer.View.UIFrames"
+      xmlns:src="clr-namespace:FileOrganizer.ViewModel.FileButtons"
       mc:Ignorable="d" 
       d:DesignHeight="720" d:DesignWidth="300"
-      Title="FileList">
+      Title="FileList"
+      DataContext="{StaticResource VModel}">
 
     <Grid Background="#444444">
-        <ListView ItemsSource="{Binding Source={StaticResource VModel}}" HorizontalContentAlignment="Stretch" Background="#444444">
+        <ListView ItemsSource="{Binding FileButtons}" HorizontalContentAlignment="Stretch" Background="#444444">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Style.Setters>
+                        <Setter Property="Margin" Value="-1"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="BorderThickness" Value="0" />
+                    </Style.Setters>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#676767"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <!--<Button Content="{Binding Name}" VerticalAlignment="Center" HorizontalContentAlignment="Left"
-                            Background="#222222" Foreground="#f5f5f8" Height="50" BorderThickness="0"
-                            Command="{Binding Source={StaticResource VModel}, Path=FSSingleClick}" CommandParameter="{Binding}"/> -->
+                    <src:FileButtonView/>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

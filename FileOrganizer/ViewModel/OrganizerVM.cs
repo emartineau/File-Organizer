@@ -59,16 +59,19 @@ namespace FileOrganizer.ViewModel
         
         public ObservableCollection<FileButtonViewModel> FileButtons { get; }
 
-        public FileButtonViewModel CurrentFileSystemInfo
+        public FileButtonViewModel SelectedFileButton
         {
             get => FileButtons[CurrentFileIndex];
             set
             {
                 if (value.FileSystemInfo.FullName == LastSelectedFile?.FullName) return;
+                SelectedFileButton.IsSelected = false;
 
                 CurrentFileIndex = FileButtons.ToList().FindIndex((fsi) =>
                     fsi.FileSystemInfo.FullName == value.FileSystemInfo.FullName);
-                LastSelectedFile = CurrentFileSystemInfo.FileSystemInfo;
+                LastSelectedFile = SelectedFileButton.FileSystemInfo;
+
+                SelectedFileButton.IsSelected = true;
             }
         }
 
@@ -86,13 +89,13 @@ namespace FileOrganizer.ViewModel
             }
         }
 
-        public string TitleText { get => $"{CurrentFileSystemInfo.FileSystemInfo.Name} - File Organizer"; }
+        public string TitleText { get => $"{SelectedFileButton.FileSystemInfo.Name} - File Organizer"; }
         public string FooterText
         {
             get =>
                   $"Current Folder: '{WorkingDirectory.Name}' " +
                   (WorkingFiles == null || WorkingFiles.Count == 0 ? "" :
-                    $"Selected: '{CurrentFileSystemInfo.FileSystemInfo.Name}' [{CurrentFileIndex + 1}/{WorkingFiles.Count}]");
+                    $"Selected: '{SelectedFileButton.FileSystemInfo.Name}' [{CurrentFileIndex + 1}/{WorkingFiles.Count}]");
         }
 
         public int CurrentFileIndex
@@ -103,7 +106,9 @@ namespace FileOrganizer.ViewModel
                 if (WorkingFiles != null)
                 {
                     Organizer.CurrentFileIndex = value % WorkingFiles.Count;
-                    OnPropertyChanged("CurrentFile");
+                    LastSelectedFile = FileButtons[CurrentFileIndex].FileSystemInfo;
+                    OnPropertyChanged("SelectedFileButton");
+                    OnPropertyChanged("LastSelectedFile");
                     OnPropertyChanged("TitleText");
                     OnPropertyChanged("FooterText");
                 }
@@ -155,19 +160,19 @@ namespace FileOrganizer.ViewModel
         {
             if (ClickTimer.Enabled) // Double-Click
             {
-                if (Directory.Exists(fsInfo.FullName))
+                if (Directory.Exists(fsInfo.FullName) && fsInfo.FullName == SelectedFileButton.FileSystemInfo.FullName)
                 {
                     WorkingDirectory = new DirectoryInfo(fsInfo.FullName);
                 }
                 else
                 {
-                    CurrentFileIndex = WorkingFiles.ToList().FindIndex((fsi) => fsi.FullName == fsInfo.FullName);
+                    SelectedFileButton = FileButtons.ToList().Find((fb) => fb.FileSystemInfo.FullName == fsInfo.FullName);
                 }
             }
             else // Single-Click
             {
                 ClickTimer.Start();
-                CurrentFileSystemInfo = FileButtons.ToList().Find((fb) => fb.FileSystemInfo.FullName == fsInfo.FullName);
+                SelectedFileButton = FileButtons.ToList().Find((fb) => fb.FileSystemInfo.FullName == fsInfo.FullName);
             }
         }
 
@@ -213,8 +218,8 @@ namespace FileOrganizer.ViewModel
             }
             catch (Exception e) when (e is IOException || e is DirectoryNotFoundException)
             {
-                Console.WriteLine("File could not be read.");
-                Console.WriteLine(e.Message);
+                System.Diagnostics.Debug.WriteLine("File could not be read.");
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
 
             foreach (var entry in KeyMap.ReadMapping(contents))
@@ -231,7 +236,7 @@ namespace FileOrganizer.ViewModel
 
         private async void FileOperationAsync(DirectoryInfo destination, CommandType commandType)
         {
-            var movingFile = CurrentFileSystemInfo.FileSystemInfo;
+            var movingFile = SelectedFileButton.FileSystemInfo;
 
             // If the destination folder matches the identifying skip-name, skip moving this file.
             if (destination.Name == KeyMap.DefaultSkipName)
@@ -254,12 +259,12 @@ namespace FileOrganizer.ViewModel
             }
             catch (Exception e) when (e is IOException || e is DirectoryNotFoundException)
             {
-                Console.WriteLine($"Could not move file {movingFile.Name} to {destination.FullName}");
-                Console.WriteLine(e.Message);
+                System.Diagnostics.Debug.WriteLine($"Could not move file {movingFile.Name} to {destination.FullName}");
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
 
             var completionMessage = $"Performed operation {commandType.ToString()} on File:{movingFile.Name}, Destination:{destination.FullName}.";
-            Console.WriteLine(completionMessage);
+            System.Diagnostics.Debug.WriteLine(completionMessage);
         }
     }
 }

@@ -5,7 +5,7 @@ namespace FileOrganizer.View.UIFrames
     /// <summary>
     /// Interaction logic for Footer.xaml
     /// </summary>
-    public partial class Footer : Page
+    public partial class Footer : UserControl
     {
         public Footer()
         {
